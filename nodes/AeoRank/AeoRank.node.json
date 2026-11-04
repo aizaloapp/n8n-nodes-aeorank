@@ -1,0 +1,24 @@
+{
+  "node": "n8n-nodes-aeorank.aeoRank",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "Marketing & Content",
+    "Development"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://aeorank.app/pricing"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://aeorank.app/learn"
+      }
+    ]
+  },
+  "alias": [
+    "AeoRank"
+  ]
+}

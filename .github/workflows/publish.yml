@@ -1,0 +1,43 @@
+name: Publish to npm with Provenance
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install devDependencies
+        run: npm install --ignore-scripts
+
+      - name: Build and Test
+        run: |
+          npm run build
+          npm test
+
+      - name: Publish to npm with SLSA Provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          PKG_VER=$(node -p "require('./package.json').version")
+          if npm view "n8n-nodes-aeorank@${PKG_VER}" version >/dev/null 2>&1; then
+            echo "Version ${PKG_VER} is already published on npm."
+          else
+            npm publish --provenance --access public
+          fi
